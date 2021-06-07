@@ -7,11 +7,14 @@ import {
    StyleSheet
 } from "react-native"
 import theme from "../../assets/themes"
+import Avatars from "./Avatars"
 
-const Card = ({ item }) => {
+const Card = ({ item, navigation }) => {
    return (
       <ImageBackground source={item.background} style={styles.imageBackground}>
-         <Pressable>
+         <Pressable
+            onPress={() => navigation.navigate("Shared Album", { item: item })}
+         >
             <View style={styles.imageContentContainer}>
                <View>
                   <Text style={styles.imageTitle}>{item.title}</Text>
@@ -19,7 +22,9 @@ const Card = ({ item }) => {
                      style={styles.imageSubtitle}
                   >{`Created by ${item.user}`}</Text>
                </View>
-               <View></View>
+               <View>
+                  <Avatars avatars={item.avatars} />
+               </View>
             </View>
          </Pressable>
       </ImageBackground>
@@ -37,7 +42,11 @@ const styles = StyleSheet.create({
       borderRadius: theme.borderRadius.m,
       justifyContent: "center"
    },
-   imageContentContainer: {},
+   imageContentContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between"
+   },
    imageTitle: {
       ...theme.textVariants.h1,
       color: theme.colors.white
