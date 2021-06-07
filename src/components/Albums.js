@@ -1,11 +1,11 @@
-import React, { Fragment, useLayoutEffect, useRef } from "react"
+import React, { Fragment, useLayoutEffect, useRef, useMemo } from "react"
 import { View, ScrollView, StyleSheet, TouchableOpacity } from "react-native"
 import theme from "../../assets/themes/index"
 import albumData from "../../assets/data/albumPage"
 import Card from "./Card"
 import Separator from "./Separator"
 import Feather from "@expo/vector-icons/Feather"
-import BottomSheet from "reanimated-bottom-sheet"
+import RBSheet from "react-native-raw-bottom-sheet"
 import BottomSheetContent from "./BottomSheetContent"
 
 const Albums = ({ navigation, navigation: { setOptions } }) => {
@@ -21,16 +21,13 @@ const Albums = ({ navigation, navigation: { setOptions } }) => {
          )
       })
    })
-   const renderContent = () => (
-      <BottomSheetContent handleClose={closeBottomSheet} />
-   )
 
    const openBottomSheet = () => {
-      sheetRef.current.snapTo(0)
+      sheetRef.current.open()
    }
 
    const closeBottomSheet = () => {
-      sheetRef.current.snapTo(1)
+      sheetRef.current.close()
    }
    return (
       <Fragment>
@@ -45,13 +42,15 @@ const Albums = ({ navigation, navigation: { setOptions } }) => {
                ))}
             </View>
          </ScrollView>
-         <BottomSheet
+         <RBSheet
             ref={sheetRef}
-            snapPoints={[250, 0]}
-            initialSnap={1}
-            borderRadius={10}
-            renderContent={renderContent}
-         />
+            height={250}
+            openDuration={300}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+         >
+            <BottomSheetContent handleClose={closeBottomSheet} />
+         </RBSheet>
       </Fragment>
    )
 }
