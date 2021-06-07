@@ -1,14 +1,45 @@
 import React from "react"
-import { View, Text } from "react-native"
+import { View, Text, ScrollView, StyleSheet } from "react-native"
+import Avatars from "./Avatars"
+import SharedAlbumTitleCard from "./SharedAlbumTitleCard"
+import theme from "./../../assets/themes/index"
+import ImageGallery from "./ImageGallery"
+import backgroundImages from "./../../assets/data/backgroundImages"
 
 const SharedAlbum = ({ route }) => {
-   const { item } = route.params
-   console.log(item)
+   const { album } = route.params
    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-         <Text>SharedAlbum Page</Text>
-      </View>
+      <ScrollView>
+         <SharedAlbumTitleCard album={album} />
+         <View style={styles.avatarContainer}>
+            <Avatars avatars={album.avatars} />
+            <Text
+               style={styles.avatarText}
+            >{`${album.avatars.length} people`}</Text>
+         </View>
+
+         <ImageGallery images={backgroundImages} />
+      </ScrollView>
    )
 }
+
+const styles = StyleSheet.create({
+   avatarContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      backgroundColor: theme.colors.lightGray,
+      marginVertical: theme.spacing.l,
+      marginHorizontal: theme.spacing.m,
+      paddingHorizontal: theme.spacing.m,
+      paddingVertical: theme.spacing.sm,
+      borderRadius: theme.borderRadius.m
+   },
+   avatarText: {
+      ...theme.textVariants.body3,
+      color: theme.colors.black,
+      opacity: 0.2
+   }
+})
 
 export default SharedAlbum
